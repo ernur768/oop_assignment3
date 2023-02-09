@@ -5,15 +5,13 @@ public class Product {
     private int id;
     private String name;
     private int price;
-    private String expirationDate;
     private int remained;
     private boolean isAvailable;
 
-    public Product(int id, String name, int price, String expiration_date, int remained){
+    public Product(int id, String name, int price, int remained){
         setId(id);
         setName(name);
         setPrice(price);
-        setExpirationDate(expiration_date);
         setRemained(remained);
     }
 
@@ -30,9 +28,6 @@ public class Product {
         this.price = price;
     }
 
-    public void setExpirationDate(String expirationDate) {
-        this.expirationDate = expirationDate;
-    }
 
     public void setRemained(int remained) {
         this.remained = remained;
@@ -48,10 +43,6 @@ public class Product {
 
     public int getPrice() {
         return price;
-    }
-
-    public String getExpirationDate() {
-        return expirationDate;
     }
 
     public int getRemained() {
