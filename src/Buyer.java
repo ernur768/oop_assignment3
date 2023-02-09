@@ -1,13 +1,13 @@
 import java.util.List;
 
-public class User {
+public class Buyer {
 
     private int id;
     private String name;
     private int balance;
     private List<Product> cart;
 
-    public User(int id, String name, int balance) {
+    public Buyer(int id, String name, int balance) {
         setId(id);
         setName(name);
         setBalance(balance);
