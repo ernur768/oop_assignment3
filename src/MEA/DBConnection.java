@@ -1,3 +1,5 @@
+package MEA;
+
 import java.sql.*;
 
 public class DBConnection {
