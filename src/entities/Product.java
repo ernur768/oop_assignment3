@@ -1,10 +1,12 @@
+package entities;
+
 public class Product {
 
     private int id;
     private String name;
     private int price;
     private int remained;
-    private boolean isAvailable;
+
 
     public Product(int id, String name, int price, int remained){
         setId(id);
@@ -13,6 +15,9 @@ public class Product {
         setRemained(remained);
     }
 
+    public boolean isAvailable(){
+        return getRemained() > 0;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -25,7 +30,6 @@ public class Product {
     public void setPrice(int price) {
         this.price = price;
     }
-
 
     public void setRemained(int remained) {
         this.remained = remained;
