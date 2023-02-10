@@ -58,23 +58,27 @@ public class ProductRepository implements IProductRepository {
     }
 
     @Override
-    public boolean buyProduct(Product product) {
-//        Connection connection = null;
-//
-//        try {
-//            connection = db.getConnection();
-//            PreparedStatement statement = connection.prepareStatement("select * from products where name=?");
-//            statement.setString(1, product.getName());
-//
-//            ResultSet rs = statement.executeQuery();
-//
-//            if (rs.next()){
-//
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("SQLException");
-//            System.out.println(e.getMessage());
-//        }
+    public boolean buyProduct(Product product, int quantity) {
+        if (product.getRemained() - quantity < 0){
+            System.out.println("There are only" + product.getRemained() + " products left");
+            return false;
+        }
+
+        Connection connection;
+        try {
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("update products set remained=? where id=?");
+            statement.setInt(1,product.getRemained() - quantity);
+            statement.setInt(2, product.getId());
+            statement.execute();
+
+            product.setRemained(product.getRemained() - quantity);
+
+            return true;
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 }
