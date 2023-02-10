@@ -1,4 +1,4 @@
-package MEA;
+package entities;
 
 import java.util.List;
 
