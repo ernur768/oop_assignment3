@@ -81,4 +81,42 @@ public class ProductRepository implements IProductRepository {
         }
         return false;
     }
+
+    public boolean addProduct(Product product, int quantity) {
+        Connection connection;
+        try {
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("insert into products(id, name, price, remainded) values (?,?,?,?)");
+            statement.setInt(1, product.getId());
+            statement.setString(2, product.getName());
+            statement.setInt(3, product.getPrice());
+            statement.setInt(4, product.getRemained());
+            statement.execute();
+            connection.commit();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+
+    public boolean deleteProduct(int productId) {
+        Connection connection;
+
+        try {
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("delete from products where id=?");
+            statement.setInt(1, productId);
+            statement.execute();
+            connection.commit();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
 }
+
