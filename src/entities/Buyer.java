@@ -46,4 +46,11 @@ public class Buyer {
     public List<Product> getCart() {
         return cart;
     }
+
+    @Override
+    public String toString() {
+        return  "id:" + getId() + "\n" +
+                "name:" + getName() + "\n" +
+                "id:" + getBalance() + "\n";
+    }
 }
