@@ -3,44 +3,13 @@ package entities;
 import data.PostgresDB;
 import repositories.ProductRepository;
 
-import java.sql.SQLException;
-import java.sql.Connection;
+import java.sql.*;
 
-public class Seller {
-    private int id;
-    private String name;
-    private int balance;
+public class Seller extends User{
 
-    public Seller(int id, String name, int balance) {
-        this.id = id;
-        this.name = name;
-        this.balance = balance;
+    public Seller(String name, String password, String role, int balance) {
+        super(name, password, role, balance);
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getBalance() {
-        return balance;
-    }
-
-    public void setBalance(int balance) {
-        this.balance = balance;
-    }
-
 
     public String dataSeller(){
         return "id:" + getId() + "\n" +

@@ -23,7 +23,7 @@ public class ProductRepository implements IProductRepository {
         Connection connection = null;
 
         try {
-            connection = db.getConnection();
+            connection = IDB.getConnection();
             PreparedStatement statement = connection.prepareStatement("select * from products where name=?");
             statement.setString(1, productName);
 
@@ -66,7 +66,7 @@ public class ProductRepository implements IProductRepository {
 
         Connection connection;
         try {
-            connection = db.getConnection();
+            connection = IDB.getConnection();
             PreparedStatement statement = connection.prepareStatement("update products set remained=? where id=?");
             statement.setInt(1,product.getRemained() - quantity);
             statement.setInt(2, product.getId());
@@ -85,7 +85,7 @@ public class ProductRepository implements IProductRepository {
     public boolean addProduct(Product product, int quantity) {
         Connection connection;
         try {
-            connection = db.getConnection();
+            connection = IDB.getConnection();
             PreparedStatement statement = connection.prepareStatement("insert into products(id, name, price, remainded) values (?,?,?,?)");
             statement.setInt(1, product.getId());
             statement.setString(2, product.getName());
@@ -106,7 +106,7 @@ public class ProductRepository implements IProductRepository {
         Connection connection;
 
         try {
-            connection = db.getConnection();
+            connection = IDB.getConnection();
             PreparedStatement statement = connection.prepareStatement("delete from products where id=?");
             statement.setInt(1, productId);
             statement.execute();
