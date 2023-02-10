@@ -50,4 +50,12 @@ public class Product {
     public int getRemained() {
         return remained;
     }
+
+    @Override
+    public String toString() {
+        return  "id: " + getId() + "\n" +
+                "name: " + getName() + "\n" +
+                "price: " + getPrice() + "\n" +
+                "remained: " + getRemained();
+    }
 }
