@@ -6,7 +6,7 @@ public class User {
     private int id;
     private String name;
     private String password;
-    private String role;
+    private String role = "buyer";
     private int balance;
 
     static Connection connection = null;

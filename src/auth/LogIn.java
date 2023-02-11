@@ -1,16 +1,22 @@
+package auth;
+
 import data.PostgresDB;
 import entities.User;
 
-import java.sql.*;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
-public class LogIn extends User {
-    private static Statement statement= null;
+public class LogIn extends User{
     static Connection connection = null;
     static Scanner in = new Scanner(System.in);
     public LogIn(String username, String password, String role, int balance) {
         super(username, password, role, balance);
     }
+
     public static void login() throws SQLException, ClassNotFoundException {
         System.out.println("Write username: ");
         String username = in.next();
@@ -18,10 +24,11 @@ public class LogIn extends User {
         String pass = in.next();
         searchUser(username, pass);
     }
+
     public static void searchUser(String name, String pass) throws SQLException, ClassNotFoundException {
         connection = PostgresDB.getConnection();
         String role = null;
-        statement = connection.createStatement();
+        Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery("SELECT * FROM users");
         while (rs.next()){
             if ((name.equals(rs.getString("username"))) && pass.equals(rs.getString("password"))){
@@ -30,17 +37,19 @@ public class LogIn extends User {
             }
         }
         if(role==null){
-            System.out.println("There is no such user such called " + rs.getString("username") + "/ the wrong password!");
-            Main.Menu.loginMethod();
+            System.out.println("There is no such user or the wrong password!");
+//            Menu.loginMethod();
         }
         successfulLogin(role);
     }
-    public static void successfulLogin(String role) throws SQLException, ClassNotFoundException {
+
+    public static void successfulLogin(String role) throws SQLException {
         if (role.equals("seller")) {
-//            Main.Menu.forTheSeller();
-            return;
+//            Menu.forTheSeller();
+            System.out.println("Seller menu in process...");
         } else if (role.equals("buyer")) {
-            Main.Menu.forTheBuyer();
+//            Menu.forTheBuyer();
+            System.out.println("Buyer menu in process...");
         }
     }
 }

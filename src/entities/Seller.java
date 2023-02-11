@@ -17,11 +17,16 @@ public class Seller extends User{
                 "id:" + getBalance() + "\n";
 
     }
-    public void addProduct(Product product, int quantity) throws SQLException{
+
+    public static void addProduct(Product product, int quantity) throws SQLException{
         PostgresDB db = new PostgresDB();
         ProductRepository productRepository = new ProductRepository(db);
         productRepository.addProduct(product, quantity);
     }
+
+    public static void addProduct() {
+    }
+
     public void deleteProduct(int productId) throws SQLException{
         PostgresDB db = new PostgresDB();
         ProductRepository productRepository = new ProductRepository(db);
