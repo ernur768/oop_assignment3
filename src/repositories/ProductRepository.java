@@ -1,13 +1,14 @@
 package repositories;
 
 import data.interfaces.IDB;
+import entities.Buyer;
 import entities.Product;
+import entities.Seller;
 import repositories.interfaces.IProductRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProductRepository implements IProductRepository {
 
@@ -17,21 +18,34 @@ public class ProductRepository implements IProductRepository {
         this.db = db;
     }
 
+    private List<Product> createProductList(ResultSet rs) throws SQLException {
+        List<Product> products = new LinkedList<>();
+        while (rs.next()){
+            Product product = new Product(rs.getInt("id"), rs.getInt("sellerId"),
+                    rs.getString("name"), rs.getInt("price"),
+                    rs.getString("category"), rs.getInt("remained"));
+
+            products.add(product);
+        }
+
+        return products;
+    }
 
     @Override
     public Product findProduct(String productName) {
         Connection connection = null;
 
         try {
-            connection = IDB.getConnection();
+            connection = db.getConnection();
             PreparedStatement statement = connection.prepareStatement("select * from products where name=?");
             statement.setString(1, productName);
 
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()){
-                return new Product(rs.getInt("id"), rs.getString("name"),
-                        rs.getInt("price"), rs.getInt("remained"));
+                return new Product(rs.getInt("id"), rs.getInt("sellerId"),
+                        rs.getString("name"), rs.getInt("price"),
+                        rs.getString("category"), rs.getInt("remained"));
             }
 
         } catch (SQLException e) {
@@ -60,13 +74,12 @@ public class ProductRepository implements IProductRepository {
     @Override
     public boolean buyProduct(Product product, int quantity) {
         if (product.getRemained() - quantity < 0){
-            System.out.println("There are only" + product.getRemained() + " products left");
             return false;
         }
 
-        Connection connection;
+        Connection connection = null;
         try {
-            connection = IDB.getConnection();
+            connection = db.getConnection();
             PreparedStatement statement = connection.prepareStatement("update products set remained=? where id=?");
             statement.setInt(1,product.getRemained() - quantity);
             statement.setInt(2, product.getId());
@@ -79,44 +92,171 @@ public class ProductRepository implements IProductRepository {
             System.out.println("SQLException");
             System.out.println(e.getMessage());
         }
+        finally {
+            try{
+                connection.close();
+            }
+            catch (NullPointerException e){
+                System.out.println("NullPointerException");
+                System.out.println(e.getMessage());
+            }
+            catch (SQLException e){
+                System.out.println("SQLException");
+                System.out.println(e.getMessage());
+            }
+        }
         return false;
     }
 
-    public boolean addProduct(Product product, int quantity) {
-        Connection connection;
+    @Override
+    public boolean createProduct(Product product) {
+        Connection connection = null;
         try {
-            connection = IDB.getConnection();
-            PreparedStatement statement = connection.prepareStatement("insert into products(id, name, price, remainded) values (?,?,?,?)");
-            statement.setInt(1, product.getId());
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement
+                    ("insert into products(sellerId,name, price, category, remained) values (?, ?, ?, ?, ?)");
+            statement.setInt(1, product.getSellerId());
             statement.setString(2, product.getName());
             statement.setInt(3, product.getPrice());
-            statement.setInt(4, product.getRemained());
+            statement.setString(4, product.getCategory());
+            statement.setInt(5, product.getRemained());
             statement.execute();
-            connection.commit();
+
             return true;
         } catch (SQLException e) {
             System.out.println("SQLException");
             System.out.println(e.getMessage());
         }
+        finally {
+            try {
+                connection.close();
+            }
+            catch (SQLException e){
+                System.out.println("SQLException");
+                System.out.println(e.getMessage());
+            }
+        }
         return false;
     }
 
-
+    @Override
     public boolean deleteProduct(int productId) {
-        Connection connection;
+        Connection connection = null;
 
         try {
-            connection = IDB.getConnection();
+            connection = db.getConnection();
             PreparedStatement statement = connection.prepareStatement("delete from products where id=?");
             statement.setInt(1, productId);
             statement.execute();
-            connection.commit();
+
             return true;
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+            System.out.println(e.getMessage());
+        }
+        finally {
+            try {
+                connection.close();
+            }
+            catch (SQLException e){
+                System.out.println("SQLException");
+                System.out.println(e.getMessage());
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        Connection connection = null;
+
+        try {
+            connection = db.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select * from products");
+
+            return createProductList(rs);
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+            System.out.println(e.getMessage());
+        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("SQLException");
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Product> getProductsByCategory(String category) {
+        Connection connection = null;
+
+        try {
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("select * from products where category=?");
+            statement.setString(1, category);
+            ResultSet rs = statement.executeQuery();
+
+            return createProductList(rs);
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Product> getProductsBySellerId(Seller seller) {
+        Connection connection = null;
+
+        try {
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("select * from products where sellerId=?");
+            statement.setInt(1, seller.getId());
+            ResultSet rs = statement.executeQuery();
+
+            return createProductList(rs);
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+            System.out.println(e.getMessage());
+            return null;
+        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("SQLException");
+                System.out.println(e.getMessage());
+            }
+
+        }
+    }
+
+    @Override
+    public boolean productExists(String productName) {
+        Connection connection = null;
+
+        try {
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("select * from products where name=?");
+            statement.setString(1, productName);
+            ResultSet rs = statement.executeQuery();
+
+            return rs.next();
         } catch (SQLException e) {
             System.out.println("SQLException");
             System.out.println(e.getMessage());
         }
         return false;
     }
+
+
 }
 

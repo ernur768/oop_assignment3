@@ -1,38 +1,14 @@
 package entities;
 
-import data.PostgresDB;
-import repositories.ProductRepository;
-
-import java.sql.*;
 
 public class Seller extends User{
 
-    public Seller(String name, String password, String role, int balance) {
-        super(name, password, role, balance);
+
+    public Seller(String username, String password, int balance, boolean role) {
+        super(username, password, balance, role);
     }
 
-    public String dataSeller(){
-        return "id:" + getId() + "\n" +
-                "name:" + getName() + "\n" +
-                "id:" + getBalance() + "\n";
-
+    public Seller(int id, String username, String password, int balance, boolean role) {
+        super(id, username, password, balance, role);
     }
-
-    public static void addProduct(Product product, int quantity) throws SQLException{
-        PostgresDB db = new PostgresDB();
-        ProductRepository productRepository = new ProductRepository(db);
-        productRepository.addProduct(product, quantity);
-    }
-
-    public static void addProduct() {
-    }
-
-    public void deleteProduct(int productId) throws SQLException{
-        PostgresDB db = new PostgresDB();
-        ProductRepository productRepository = new ProductRepository(db);
-        productRepository.deleteProduct(productId);
-    }
-
-
-
 }
