@@ -1,8 +1,7 @@
 package controllers;
 
-import entities.Buyer;
 import entities.Product;
-import entities.Seller;
+import entities.User;
 import repositories.interfaces.IProductRepository;
 
 import java.util.List;
@@ -33,7 +32,14 @@ public class ProductController {
         return (created ? "Product was added to market" : "Product was not added to market");
     }
 
-    public List<Product> selectSellerProducts(Seller seller){
+    public String removeProduct(int productId){
+        boolean removed = repo.deleteProduct(productId);
+
+        return (removed ? "Product was removed from market" : "Product was not removed from market");
+    }
+
+
+    public List<Product> selectSellerProducts(User seller){
         List<Product> products = repo.getProductsBySellerId(seller);
         if (products.isEmpty()){
             System.out.println("You do not have any product in market");

@@ -1,8 +1,7 @@
 package repositories.interfaces;
 
-import entities.Buyer;
 import entities.Product;
-import entities.Seller;
+import entities.User;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface IProductRepository {
     boolean deleteProduct(int productId);
     List<Product> getAllProducts();
     List<Product> getProductsByCategory(String category);
-    List<Product> getProductsBySellerId(Seller seller);
+    List<Product> getProductsBySellerId(User seller);
 
     boolean productExists(String productName);
 }

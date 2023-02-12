@@ -23,8 +23,8 @@ public class UserController {
         return user;
     }
 
-    public void register(User user){
+    public String register(User user){
         boolean created = repo.createUser(user);
-        System.out.println(created ? "User created" : "User was not created");
+        return (created ? "User created" : "User was not created");
     }
 }

@@ -1,20 +1,16 @@
 import controllers.ProductController;
 import controllers.UserController;
-import entities.Buyer;
-import entities.Product;
-import entities.Seller;
-import entities.User;
+import entities.*;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class MyApplication {
 
     private final UserController userCtrl;
     private final ProductController productCtrl;
     private User user;
+    private List<Product> cart;
     private final Scanner scanner;
     private int option;
 
@@ -22,6 +18,7 @@ public class MyApplication {
         this.userCtrl = userCtrl;
         this.productCtrl = productCtrl;
         this.scanner = new Scanner(System.in);
+        this.cart = new LinkedList<>();
     }
 
     private void optionInRange(int end){
@@ -38,6 +35,7 @@ public class MyApplication {
                     [2] Registration""");
             System.out.print("Choose option: ");
             optionInRange(2);
+            System.out.println();
 
             try {
                 switch (option) {
@@ -58,6 +56,9 @@ public class MyApplication {
                 if (user.isRole()){
                     startSellerInterface();
                 }
+                else {
+                    startBuyerInterface();
+                }
             }
 
         }
@@ -67,7 +68,7 @@ public class MyApplication {
 
 
     public User login(){
-        System.out.print("\nEnter username: ");
+        System.out.print("Enter username: ");
         String username = scanner.next();
 
         User user = userCtrl.findUser(username);
@@ -93,7 +94,7 @@ public class MyApplication {
         String username = scanner.next();
         System.out.print("Enter password: ");
         String password1 = scanner.next();
-        System.out.print("Enter password: ");
+        System.out.print("Confirm password: ");
         String password2 = scanner.next();
         if (!Objects.equals(password1, password2)){
             System.out.println("passwords do not match");
@@ -108,12 +109,12 @@ public class MyApplication {
 
         User user = null;
         switch (option) {
-            case 1 -> user = new Seller(username, password1, 0, true);
-            case 2 -> user = new Buyer(username, password1, 0, false);
+            case 1 -> user = new User(username, password1, 0, true);
+            case 2 -> user = new User(username, password1, 0, false);
         }
 
-        userCtrl.register(user);
-
+        System.out.println(userCtrl.register(user));
+        System.out.println();
     }
 
     public void startSellerInterface(){
@@ -123,13 +124,13 @@ public class MyApplication {
                 [3] Add new product
                 [4] Remove the product""");
         System.out.print("Choose option: ");
-        optionInRange(2);
+        optionInRange(4);
         System.out.println();
 
         switch (option) {
             case 1 -> System.out.println(user.toString());
             case 2 -> {
-                List<Product> products = productCtrl.selectSellerProducts((Seller) user);
+                List<Product> products = productCtrl.selectSellerProducts(user);
                 products.forEach(product -> System.out.println(product.toString()));
             }
             case 3 -> {
@@ -149,14 +150,18 @@ public class MyApplication {
                 System.out.print("Enter product quantity: ");
                 int remained = scanner.nextInt();
 
-                Product product = new Product( ((Seller) user).getId(), name, price, category, remained);
+                Product product = new Product(user.getId(), name, price, category, remained);
 
                 System.out.println(productCtrl.addProduct(product));
             }
             case 4 -> {
+                System.out.print("Enter product id: ");
+                int productId = scanner.nextInt();
 
+                System.out.println(productCtrl.removeProduct(productId));
             }
         }
+
 
         try {
             System.out.print("press any key to continue");
@@ -165,5 +170,57 @@ public class MyApplication {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void startBuyerInterface (){
+        System.out.print("""
+                [1] My account
+                [2] Search product by name
+                [3] View products in the cart
+                """);
+        System.out.print("Choose option: ");
+        optionInRange(3);
+        System.out.println();
+
+        switch (option){
+            case 1 -> System.out.println(user.toString());
+            case 2 -> {
+                Product product;
+                do {
+                    System.out.print("Enter product name: ");
+                    String name = scanner.next();
+                    product = productCtrl.findProduct(name);
+                }while (product == null);
+                System.out.println(product.toString());
+                System.out.println("""
+                        [1] Add to cart
+                        [2] Close""");
+                System.out.print("Choose option: ");
+                optionInRange(2);
+
+                switch (option){
+                    case 1 -> {
+                        System.out.print("Enter quantity: ");
+                        int quantity = scanner.nextInt();
+                        if (product.getRemained() < quantity){
+                            System.out.println("Only " + product.getRemained() + " pieces left");
+                            break;
+                        }
+
+                        cart.add(new Product(product.getId(), product.getSellerId(), product.getName(),
+                                product.getPrice(), product.getCategory(), product.getRemained()));
+                    }
+                    case 2 -> {
+                        break;
+                    }
+                }
+            }
+            case 3 -> {
+                System.out.println("Cart:");
+                cart.forEach(product -> System.out.println(product.toString()));
+            }
+        }
+
+        System.out.println();
     }
 }

@@ -1,9 +1,8 @@
 package repositories;
 
 import data.interfaces.IDB;
-import entities.Buyer;
 import entities.Product;
-import entities.Seller;
+import entities.User;
 import repositories.interfaces.IProductRepository;
 
 import java.sql.*;
@@ -213,7 +212,7 @@ public class ProductRepository implements IProductRepository {
     }
 
     @Override
-    public List<Product> getProductsBySellerId(Seller seller) {
+    public List<Product> getProductsBySellerId(User seller) {
         Connection connection = null;
 
         try {

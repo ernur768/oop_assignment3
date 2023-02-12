@@ -1,8 +1,6 @@
 package repositories;
 
 import data.interfaces.IDB;
-import entities.Buyer;
-import entities.Seller;
 import entities.User;
 import repositories.interfaces.IUserRepository;
 
@@ -31,17 +29,9 @@ public class UserRepository implements IUserRepository {
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()){
-
-                if (rs.getBoolean("role")){
-                    return new Seller(rs.getInt("id"), rs.getString("username"),
-                            rs.getString("password"), rs.getInt("balance"),
-                            rs.getBoolean("role"));
-                }
-                else {
-                    return new Buyer(rs.getInt("id"), rs.getString("username"),
-                            rs.getString("password"), rs.getInt("balance"),
-                            rs.getBoolean("role"));
-                }
+                return new User(rs.getInt("id"), rs.getString("username"),
+                        rs.getString("password"), rs.getInt("balance"),
+                        rs.getBoolean("role"));
             }
         } catch (SQLException e) {
             System.out.println("SQLException");
