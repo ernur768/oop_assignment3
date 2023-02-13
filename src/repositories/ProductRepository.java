@@ -20,9 +20,7 @@ public class ProductRepository implements IProductRepository {
     private List<Product> createProductList(ResultSet rs) throws SQLException {
         List<Product> products = new LinkedList<>();
         while (rs.next()){
-            Product product = new Product(rs.getInt("id"), rs.getInt("sellerId"),
-                    rs.getString("name"), rs.getInt("price"),
-                    rs.getString("category"), rs.getInt("remained"));
+            Product product = new Product(rs.getInt("id"), rs.getInt("sellerId"), rs.getString("name"), rs.getInt("price"), rs.getString("category"), rs.getInt("remained"));
 
             products.add(product);
         }
