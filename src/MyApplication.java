@@ -215,9 +215,9 @@ public class MyApplication {
                             System.out.println("Only " + product.getRemained() + " pieces left");
                             break;
                         }
+                        product.setQuantityInCart(quantity + product.getQuantityInCart());
 
-                        cart.add(new Product(product.getId(), product.getSellerId(), product.getName(),
-                                product.getPrice(), product.getCategory(), product.getRemained()));
+                        cart.add(product);
                     }
                     case 2 -> {
                         break;
@@ -227,7 +227,19 @@ public class MyApplication {
             }
             case 3 -> {
                 System.out.println("Cart:");
-                cart.forEach(product -> System.out.println(product.toString()));
+                for (int i = 0; i < cart.size(); i++) {
+                    for (int j = i + 1; j < cart.size() ; j++) {
+                        if (cart.get(i).getId() == cart.get(j).getId()) {
+                            cart.get(i).setQuantityInCart(cart.get(i).getQuantityInCart() + cart.get(j).getQuantityInCart());
+                            cart.remove(j);
+                            j--;
+                        }
+                    }
+                }
+                for(Product product : cart) {
+                    System.out.println("id: " + product.getId() + "\t|\tname: " + product.getName() + "\t\t|\tprice: " + product.getPrice() + "\t\t|\tquantity: " + product.getQuantityInCart());
+                }
+
             }
 
             case 4 -> {
