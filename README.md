@@ -1,6 +1,7 @@
 Java Marketplace Console App
 
-    - This is a Java-based console application for a simple marketplace where users can browse and purchase items. Users can register and login, and can choose to be either a buyer or a seller. Sellers can add products for sale, and buyers can purchase items at the listed prices.
+    - This is a Java-based console application for a simple marketplace where users can browse and purchase items. 
+    - Users can register and login, and can choose to be either a buyer or a seller. Sellers can add products for sale, and buyers can purchase items at the listed prices.
 
 Features
 

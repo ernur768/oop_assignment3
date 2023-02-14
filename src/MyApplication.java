@@ -3,6 +3,7 @@ import controllers.UserController;
 import entities.*;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class MyApplication {
@@ -122,7 +123,8 @@ public class MyApplication {
                 [1] My account
                 [2] Show my products
                 [3] Add new product
-                [4] Remove the product""");
+                [4] Remove the product
+                [5] Top up the balance""");
         System.out.print("Choose option: ");
         optionInRange(4);
         System.out.println();
@@ -160,6 +162,12 @@ public class MyApplication {
 
                 System.out.println(productCtrl.removeProduct(productId));
             }
+            case 5 -> {
+                System.out.print("Enter the balance: ");
+                int getBalance = scanner.nextInt();
+
+                System.out.println(userCtrl.createBalance(user, getBalance));
+            }
         }
 
 
@@ -177,6 +185,7 @@ public class MyApplication {
                 [1] My account
                 [2] Search product by name
                 [3] View products in the cart
+                [4] Top up the balance
                 """);
         System.out.print("Choose option: ");
         optionInRange(3);
@@ -213,11 +222,19 @@ public class MyApplication {
                     case 2 -> {
                         break;
                     }
+
                 }
             }
             case 3 -> {
                 System.out.println("Cart:");
                 cart.forEach(product -> System.out.println(product.toString()));
+            }
+
+            case 4 -> {
+                System.out.print("Enter the balance: ");
+                int getBalance = scanner.nextInt();
+
+                System.out.println(userCtrl.createBalance(user, getBalance));
             }
         }
 

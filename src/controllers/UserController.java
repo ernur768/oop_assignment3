@@ -27,4 +27,9 @@ public class UserController {
         boolean created = repo.createUser(user);
         return (created ? "User created" : "User was not created");
     }
+
+    public String createBalance(User user, int balance) {
+        boolean toppedUp = repo.topUpBalance(user, balance);
+        return (toppedUp ? "Balance topped up" : "Balance didn't top up");
+    }
 }
