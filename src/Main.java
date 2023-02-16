@@ -2,11 +2,11 @@ import controllers.ProductController;
 import controllers.UserController;
 import data.PostgresDB;
 import data.interfaces.IDB;
-import entities.Product;
 import repositories.ProductRepository;
 import repositories.UserRepository;
 import repositories.interfaces.IProductRepository;
 import repositories.interfaces.IUserRepository;
+
 
 public class Main {
 
