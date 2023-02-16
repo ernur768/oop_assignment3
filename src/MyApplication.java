@@ -218,6 +218,7 @@ public class MyApplication {
                         product.setQuantityInCart(quantity + product.getQuantityInCart());
 
                         cart.add(product);
+
                     }
                     case 2 -> {
                         break;
