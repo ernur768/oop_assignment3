@@ -8,7 +8,7 @@ public class Product {
     private int price;
     private String category;
     private int remained;
-
+    private int quantityInCart;
 
     public Product(int sellerId,String name, int price, String category, int remained) {
         this.sellerId = sellerId;
@@ -79,9 +79,18 @@ public class Product {
         this.remained = remained;
     }
 
+    public int getQuantityInCart() {
+        return quantityInCart;
+    }
+
+    public void setQuantityInCart(int quantityInCart) {
+        this.quantityInCart = quantityInCart;
+    }
+
     @Override
     public String toString() {
         return  "id: " + getId() + "\t|\tname: " + getName() +
                 "\t\t|\tprice: " + getPrice() + "\t\t|\tremained: " + getRemained();
     }
+
 }
