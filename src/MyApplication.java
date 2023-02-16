@@ -124,7 +124,8 @@ public class MyApplication {
                 [2] Show my products
                 [3] Add new product
                 [4] Remove the product
-                [5] Top up the balance""");
+                [5] Top up the balance
+                [6] Exit""");
         System.out.print("Choose option: ");
         optionInRange(4);
         System.out.println();
@@ -186,6 +187,7 @@ public class MyApplication {
                 [2] Search product by name
                 [3] View products in the cart
                 [4] Top up the balance
+                [5] Exit
                 """);
         System.out.print("Choose option: ");
         optionInRange(3);
@@ -218,7 +220,15 @@ public class MyApplication {
                         product.setQuantityInCart(quantity + product.getQuantityInCart());
 
                         cart.add(product);
-
+                        for (int i = 0; i < cart.size(); i++) {
+                            for (int j = i + 1; j < cart.size() ; j++) {
+                                if (cart.get(i).getId() == cart.get(j).getId()) {
+                                    cart.get(i).setQuantityInCart(cart.get(i).getQuantityInCart() + cart.get(j).getQuantityInCart());
+                                    cart.remove(j);
+                                    j--;
+                                }
+                            }
+                        }
                     }
                     case 2 -> {
                         break;
@@ -228,15 +238,7 @@ public class MyApplication {
             }
             case 3 -> {
                 System.out.println("Cart:");
-                for (int i = 0; i < cart.size(); i++) {
-                    for (int j = i + 1; j < cart.size() ; j++) {
-                        if (cart.get(i).getId() == cart.get(j).getId()) {
-                            cart.get(i).setQuantityInCart(cart.get(i).getQuantityInCart() + cart.get(j).getQuantityInCart());
-                            cart.remove(j);
-                            j--;
-                        }
-                    }
-                }
+
                 for(Product product : cart) {
                     System.out.println("id: " + product.getId() + "\t|\tname: " + product.getName() + "\t\t|\tprice: " + product.getPrice() + "\t\t|\tquantity: " + product.getQuantityInCart());
                 }
@@ -248,6 +250,10 @@ public class MyApplication {
                 int getBalance = scanner.nextInt();
 
                 System.out.println(userCtrl.createBalance(user, getBalance));
+            }
+
+            case 5 -> {
+                
             }
         }
 
