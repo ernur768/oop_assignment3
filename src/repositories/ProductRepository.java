@@ -104,65 +104,7 @@ public class ProductRepository implements IProductRepository {
         }
         return false;
     }
-
-    @Override
-    public boolean createProduct(Product product) {
-        Connection connection = null;
-        try {
-            connection = db.getConnection();
-            PreparedStatement statement = connection.prepareStatement
-                    ("insert into products(sellerId,name, price, category, remained) values (?, ?, ?, ?, ?)");
-            statement.setInt(1, product.getSellerId());
-            statement.setString(2, product.getName());
-            statement.setInt(3, product.getPrice());
-            statement.setString(4, product.getCategory());
-            statement.setInt(5, product.getRemained());
-            statement.execute();
-
-            return true;
-        } catch (SQLException e) {
-            System.out.println("SQLException");
-            System.out.println(e.getMessage());
-        }
-        finally {
-            try {
-                connection.close();
-            }
-            catch (SQLException e){
-                System.out.println("SQLException");
-                System.out.println(e.getMessage());
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean deleteProduct(int productId) {
-        Connection connection = null;
-
-        try {
-            connection = db.getConnection();
-            PreparedStatement statement = connection.prepareStatement("delete from products where id=?");
-            statement.setInt(1, productId);
-            statement.execute();
-
-            return true;
-        } catch (SQLException e) {
-            System.out.println("SQLException");
-            System.out.println(e.getMessage());
-        }
-        finally {
-            try {
-                connection.close();
-            }
-            catch (SQLException e){
-                System.out.println("SQLException");
-                System.out.println(e.getMessage());
-            }
-        }
-        return false;
-    }
-
+    
     @Override
     public List<Product> getAllProducts() {
         Connection connection = null;
