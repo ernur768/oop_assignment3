@@ -169,6 +169,10 @@ public class MyApplication {
 
                 System.out.println(userCtrl.createBalance(user, getBalance));
             }
+            case 6 -> {
+                System.out.println();
+                start();
+            }
         }
 
 
@@ -254,7 +258,8 @@ public class MyApplication {
             }
 
             case 5 -> {
-                
+                System.out.println();
+                start();
             }
         }
 
