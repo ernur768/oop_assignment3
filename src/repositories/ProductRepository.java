@@ -136,35 +136,6 @@ public class ProductRepository implements IProductRepository {
         return false;
     }
 
-
-    @Override
-    public boolean deleteProduct(int productId) {
-        Connection connection = null;
-
-        try {
-            connection = db.getConnection();
-            PreparedStatement statement = connection.prepareStatement("delete from products where id=?");
-            statement.setInt(1, productId);
-            statement.execute();
-
-            return true;
-        } catch (SQLException e) {
-            System.out.println("SQLException");
-            System.out.println(e.getMessage());
-        }
-        finally {
-            try {
-                connection.close();
-            }
-            catch (SQLException e){
-                System.out.println("SQLException");
-                System.out.println(e.getMessage());
-            }
-        }
-        return false;
-    }
-
-
     @Override
     public List<Product> getAllProducts() {
         Connection connection = null;
@@ -238,6 +209,37 @@ public class ProductRepository implements IProductRepository {
         }
     }
 
+
+    @Override
+    public boolean deleteProduct(int productId) {
+        Connection connection = null;
+
+        try {
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("delete from products where id=?");
+            statement.setInt(1, productId);
+            statement.execute();
+
+            return true;
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+            System.out.println(e.getMessage());
+        }
+        finally {
+            try {
+                connection.close();
+            }
+            catch (SQLException e){
+                System.out.println("SQLException");
+                System.out.println(e.getMessage());
+            }
+        }
+        return false;
+    }
+
+
+
+
     @Override
     public boolean productExists(String productName) {
         Connection connection = null;
@@ -255,7 +257,7 @@ public class ProductRepository implements IProductRepository {
         }
         return false;
     }
-
+    
 
 }
 
