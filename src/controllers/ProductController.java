@@ -49,6 +49,16 @@ public class ProductController {
         return products;
     }
 
+    public List<Product> getProductsByCategory(String category){
+        List<Product> products = repo.getProductsByCategory(category);
+
+        if (products == null){
+            System.out.println("We cannot find a product in this category.");
+            return null;
+        }
+
+        return products;
+    }
 
     public List<Product> selectSellerProducts(User seller){
         List<Product> products = repo.getProductsBySellerId(seller);
