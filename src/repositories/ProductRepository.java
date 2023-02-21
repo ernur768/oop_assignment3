@@ -28,6 +28,7 @@ public class ProductRepository implements IProductRepository {
         return products;
     }
 
+
     @Override
     public Product findProduct(String productName) {
         Connection connection = null;

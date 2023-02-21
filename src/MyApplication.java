@@ -189,9 +189,10 @@ public class MyApplication {
         System.out.print("""
                 [1] My account
                 [2] Search product by name
-                [3] View products in the cart
-                [4] Top up the balance
-                [5] Exit
+                [3] Get all product list
+                [4] View products in the cart
+                [5] Top up the balance
+                [6] Exit
                 """);
         System.out.print("Choose option: ");
         optionInRange(3);
@@ -241,6 +242,15 @@ public class MyApplication {
                 }
             }
             case 3 -> {
+                System.out.println("All products:");
+                System.out.println("ID: " + " Product name: " + " Price: " + " Remained: ");
+                for (Product p : productCtrl.getAllProducts()){
+
+                    System.out.println(p.getId() + " \t " + p.getName() + " \t\t\t" + p.getPrice() + " \t" + p.getRemained());
+                }
+            }
+
+            case 4 -> {
                 System.out.println("Cart:");
 
                 for(Product product : cart) {
@@ -249,14 +259,14 @@ public class MyApplication {
 
             }
 
-            case 4 -> {
+            case 5 -> {
                 System.out.print("Enter the balance: ");
                 int getBalance = scanner.nextInt();
 
                 System.out.println(userCtrl.createBalance(user, getBalance));
             }
 
-            case 5 -> {
+            case 6 -> {
                 System.out.println();
                 start();
             }

@@ -38,6 +38,17 @@ public class ProductController {
         return (removed ? "Product was removed from market" : "Product was not removed from market");
     }
 
+    public List<Product> getAllProducts(){
+        List<Product> products = repo.getAllProducts();
+
+        if (products == null){
+            System.out.println("Something wrong from db...");
+            return null;
+        }
+
+        return products;
+    }
+
 
     public List<Product> selectSellerProducts(User seller){
         List<Product> products = repo.getProductsBySellerId(seller);
