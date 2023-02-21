@@ -14,6 +14,8 @@ public interface IProductRepository {
     List<Product> getAllProducts();
     List<Product> getProductsByCategory(String category);
     List<Product> getProductsBySellerId(User seller);
-
+//    boolean isAvailable( int Id);
+//    Product getProduct(int productId);
+//    String UpdateAmount(int id,int quantity);
     boolean productExists(String productName);
 }

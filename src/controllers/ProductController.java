@@ -17,7 +17,6 @@ public class ProductController {
 
     public Product findProduct(String productName){
         Product product = repo.findProduct(productName);
-
         if (product == null){
             System.out.println("Product was not found!");
             return null;
@@ -25,6 +24,29 @@ public class ProductController {
 
         return product;
     }
+
+//    public String getProduct(int productId){
+//        Product product = repo.getProduct(productId);
+//
+//        return (product == null? "Such a product is not available " : product.toString());
+//    }
+
+
+    public List<Product> getAllProducts(){
+        List<Product> productList = repo.getAllProducts();
+
+        return productList;
+    }
+
+//    public void updateInfo(int productId,int amount){
+//       if(repo.isAvailable(productId)){
+//           System.out.println(repo.UpdatesQuantity(productId, amount));
+//
+//       }
+//       else{
+//           System.out.println("Unfortunately, there is no such product in stock");
+//       }
+//    }
 
     public String addProduct(Product product){
         boolean created = repo.createProduct(product);
