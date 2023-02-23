@@ -256,14 +256,19 @@ public class MyApplication {
             case 4 -> {
                 List<Product> responce = productCtrl.getAllProducts();
                 for(Product product : responce){
-                    System.out.println("id: " + product.getId() + "\t|\tname: " + product.getName() + "\t\t|\tprice: " + product.getPrice() + "\t\t|\tquantity: " + product.getQuantityInCart());
+                    System.out.println("id: " + product.getId() + "\t|\tname: " + product.getName() + "\t\t|\tprice: " + product.getPrice() + "\t\t|\tquantity: " + product.getRemained());
                 }
-//                System.out.println("Write the ID of the product you want to buy ");
-//                int Id = scanner.nextInt();
-//                System.out.println("Are you sure you want to buy this product:" + productCtrl.getProduct(Id) + "?");
-//                System.out.println("How many pieces would you like to buy?");
-//                int amountforsale = scanner.nextInt();
-//                productCtrl.updateInfo(productId,amount);
+                System.out.println("Write the Name of the product you want to buy ");
+                String name = scanner.next();
+                System.out.println("Are you sure you want to buy this product:" + productCtrl.findProduct(name) + "?");
+               System.out.println("How many pieces would you like to buy?");
+               int quantity = scanner.nextInt();
+                productCtrl.updateInfo(name,quantity);
+                break;
+
+
+
+
             }
 
 

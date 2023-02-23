@@ -25,11 +25,16 @@ public class ProductController {
         return product;
     }
 
-//    public String getProduct(int productId){
-//        Product product = repo.getProduct(productId);
-//
+    public boolean buyProduct(Product product, int quantity){
+        if(product.getRemained() < quantity){
+           return false;
+        }
+        else{
+            product.getRemained();
+        }return true;
+
 //        return (product == null? "Such a product is not available " : product.toString());
-//    }
+    }
 
 
     public List<Product> getAllProducts(){
@@ -38,15 +43,15 @@ public class ProductController {
         return productList;
     }
 
-//    public void updateInfo(int productId,int amount){
-//       if(repo.isAvailable(productId)){
-//           System.out.println(repo.UpdatesQuantity(productId, amount));
-//
-//       }
-//       else{
-//           System.out.println("Unfortunately, there is no such product in stock");
-//       }
-//    }
+    public void updateInfo(String name,int quantity){
+       if(repo.isAvailable(name)){
+           System.out.println(repo.UpdateAmount(name, quantity));
+
+       }
+       else{
+           System.out.println("Unfortunately, there is no such product in stock");
+       }
+    }
 
     public String addProduct(Product product){
         boolean created = repo.createProduct(product);
@@ -60,6 +65,18 @@ public class ProductController {
         return (removed ? "Product was removed from market" : "Product was not removed from market");
     }
 
+
+
+    public List<Product> getProductsByCategory(String category){
+        List<Product> products = repo.getProductsByCategory(category);
+
+        if (products == null){
+            System.out.println("We cannot find a product in this category.");
+            return null;
+        }
+
+        return products;
+    }
 
     public List<Product> selectSellerProducts(User seller){
         List<Product> products = repo.getProductsBySellerId(seller);

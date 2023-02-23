@@ -32,4 +32,5 @@ public class UserController {
         boolean toppedUp = repo.topUpBalance(user, balance);
         return (toppedUp ? "Balance topped up" : "Balance didn't top up");
     }
+
 }
