@@ -1,3 +1,4 @@
+import authorization.Authorization;
 import controllers.ProductController;
 import controllers.UserController;
 import entities.*;

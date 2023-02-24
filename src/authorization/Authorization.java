@@ -1,10 +1,13 @@
+package authorization;
+
+import authorization.interfaces.IAuthorization;
 import controllers.UserController;
 import entities.User;
 
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Authorization {
+public class Authorization implements IAuthorization {
 
     Scanner scanner;
 
@@ -15,6 +18,7 @@ public class Authorization {
         scanner = new Scanner(System.in);
     }
 
+    @Override
     public User login(){
         System.out.print("Enter username: ");
         String username = scanner.next();
@@ -37,6 +41,7 @@ public class Authorization {
     }
 
 
+    @Override
     public void register(){
         System.out.print("Enter username: ");
         String username = scanner.next();
