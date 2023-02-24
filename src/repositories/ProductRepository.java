@@ -164,7 +164,6 @@ public class ProductRepository implements IProductRepository {
         return false;
     }
 
-
     @Override
     public List<Product> getAllProducts() {
         Connection connection = null;
