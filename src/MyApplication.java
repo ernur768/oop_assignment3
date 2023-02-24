@@ -3,7 +3,6 @@ import controllers.UserController;
 import entities.*;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class MyApplication {
@@ -153,7 +152,7 @@ public class MyApplication {
                 System.out.print("Enter product quantity: ");
                 int remained = scanner.nextInt();
 
-                Product product = new Product(user.getId(), name, price, category, remained);
+                Product product = new Product(user.getId(), name, price,category, remained);
 
                 System.out.println(productCtrl.addProduct(product));
             }
@@ -188,10 +187,12 @@ public class MyApplication {
     public void startBuyerInterface (){
         System.out.print("""
                 [1] My account
-                [2] Search product by name
-                [3] View products in the cart
-                [4] Top up the balance
-                [5] Exit
+                [2] Search product by category
+                [3] Search product by name
+                [4] Get all products
+                [5] View products in the cart
+                [6] Top up the balance
+                [7] Exit
                 """);
         System.out.print("Choose option: ");
         optionInRange(3);
@@ -199,7 +200,18 @@ public class MyApplication {
 
         switch (option){
             case 1 -> System.out.println(user.toString());
+
             case 2 -> {
+                Product product;
+                do{
+                    System.out.println("Enter product category: ");
+                    String category = scanner.next();
+                    product = productCtrl.findProduct(category);
+                }while(product == null);
+                System.out.println(product.toString());
+                System.out.println("");
+            }
+            case 3 -> {
                 Product product;
                 do {
                     System.out.print("Enter product name: ");
@@ -240,23 +252,45 @@ public class MyApplication {
 
                 }
             }
-            case 3 -> {
-                System.out.println("Cart:");
 
+            case 4 -> {
+                List<Product> responce = productCtrl.getAllProducts();
+                for(Product product : responce){
+                    System.out.println("id: " + product.getId() + "\t|\tname: " + product.getName() + "\t\t|\tprice: " + product.getPrice() + "\t\t|\tquantity: " + product.getRemained());
+                }
+                System.out.println("Write the Name of the product you want to buy ");
+                String name = scanner.next();
+                System.out.println("Are you sure you want to buy this product:" + productCtrl.findProduct(name) + "?");
+               System.out.println("How many pieces would you like to buy?");
+               int quantity = scanner.nextInt();
+                productCtrl.updateInfo(name,quantity);
+                break;
+
+
+
+
+            }
+
+
+            case 5 -> {
+                System.out.println("Cart:");
                 for(Product product : cart) {
                     System.out.println("id: " + product.getId() + "\t|\tname: " + product.getName() + "\t\t|\tprice: " + product.getPrice() + "\t\t|\tquantity: " + product.getQuantityInCart());
                 }
 
+
+
+
             }
 
-            case 4 -> {
+            case 6 -> {
                 System.out.print("Enter the balance: ");
                 int getBalance = scanner.nextInt();
 
                 System.out.println(userCtrl.createBalance(user, getBalance));
             }
 
-            case 5 -> {
+            case 7 -> {
                 System.out.println();
                 start();
             }

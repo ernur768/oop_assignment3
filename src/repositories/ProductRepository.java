@@ -28,6 +28,35 @@ public class ProductRepository implements IProductRepository {
         return products;
     }
 
+//    public Product getProduct( int productId){
+//        Connection connection = null;
+//
+//        try{
+//            connection = db.getConnection();
+//            PreparedStatement preparedStatement = connection.prepareStatement("Select Id,amount, category,name");
+//            preparedStatement.setInt(1, productId);
+//            ResultSet rs = preparedStatement.executeQuery();
+//
+//
+//            if((rs.next())){
+//               Product product = new Product()
+//            }
+//
+//        }catch (SQLException e) {
+//            System.out.println("SQLException");
+//            System.out.println(e.getMessage());
+//        }
+//        finally {
+//            try {
+//                connection.close();
+//            } catch (SQLException e) {
+//                System.out.println("SQLException");
+//                System.out.println(e.getMessage());
+//            }
+//
+//        }
+//        return  null;
+//    }
     @Override
     public Product findProduct(String productName) {
         Connection connection = null;
@@ -235,6 +264,64 @@ public class ProductRepository implements IProductRepository {
             }
 
         }
+    }
+    
+
+    @Override
+    public boolean isAvailable(String name) {
+        Connection connection = null;
+        try {
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("Select quantity from product where id = ?");
+            statement.setString(1,name);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                if (rs.getInt("quantity") <= 0) {
+                    return false;
+                }
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("SQLException");
+                System.out.println(e.getMessage());
+            }
+
+            return true;
+        }
+    }
+
+    public String UpdateAmount(String name, int quantity){
+        Connection connection = null;
+        try {
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("Update products set quantity = quantity - ? Where ID = ?");
+            statement.setInt(1, quantity);
+            statement.setString(2, name);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("SQLException");
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                connection.close();
+                return  "The information has been updated";
+            } catch (SQLException e) {
+                System.out.println("SQLException");
+                System.out.println(e.getMessage());
+            }
+
+
+        }
+        return "The information has been updated";
     }
 
     @Override
