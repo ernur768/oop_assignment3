@@ -9,6 +9,7 @@ public class MyApplication {
 
     private final UserController userCtrl;
     private final ProductController productCtrl;
+    private final Authorization authorization;
     private User user;
     private List<Product> cart;
     private final Scanner scanner;
@@ -17,6 +18,7 @@ public class MyApplication {
     public MyApplication(ProductController productCtrl, UserController userCtrl) {
         this.userCtrl = userCtrl;
         this.productCtrl = productCtrl;
+        this.authorization = new Authorization(userCtrl);
         this.scanner = new Scanner(System.in);
         this.cart = new LinkedList<>();
     }
@@ -39,9 +41,9 @@ public class MyApplication {
 
             try {
                 switch (option) {
-                    case 1 -> user = this.login();
+                    case 1 -> user = authorization.login();
                     case 2 -> {
-                        this.register();
+                        authorization.register();
                         start();
                     }
                 }
@@ -66,56 +68,6 @@ public class MyApplication {
 
     }
 
-
-    public User login(){
-        System.out.print("Enter username: ");
-        String username = scanner.next();
-
-        User user = userCtrl.findUser(username);
-        if (user == null) {
-            return login();
-        }
-
-        System.out.print("Enter password: ");
-        String password = scanner.next();
-
-        if (Objects.equals(password, user.getPassword())){
-            return user;
-        }
-        else {
-            System.out.println("Wrong password");
-            return login();
-        }
-
-    }
-
-    public void register(){
-        System.out.print("Enter username: ");
-        String username = scanner.next();
-        System.out.print("Enter password: ");
-        String password1 = scanner.next();
-        System.out.print("Confirm password: ");
-        String password2 = scanner.next();
-        if (!Objects.equals(password1, password2)){
-            System.out.println("passwords do not match");
-            register();
-        }
-        System.out.print("""
-                [1] seller
-                [2] buyer
-                Select role:\s""");
-
-        optionInRange(2);
-
-        User user = null;
-        switch (option) {
-            case 1 -> user = new User(username, password1, 0, true);
-            case 2 -> user = new User(username, password1, 0, false);
-        }
-
-        System.out.println(userCtrl.register(user));
-        System.out.println();
-    }
 
     public void startSellerInterface(){
         System.out.println("""
@@ -209,7 +161,7 @@ public class MyApplication {
                     product = productCtrl.findProduct(category);
                 }while(product == null);
                 System.out.println(product.toString());
-                System.out.println("");
+                System.out.println();
             }
             case 3 -> {
                 Product product;
@@ -247,15 +199,15 @@ public class MyApplication {
                         }
                     }
                     case 2 -> {
-                        break;
+
                     }
 
                 }
             }
 
             case 4 -> {
-                List<Product> responce = productCtrl.getAllProducts();
-                for(Product product : responce){
+                List<Product> response = productCtrl.getAllProducts();
+                for(Product product : response){
                     System.out.println("id: " + product.getId() + "\t|\tname: " + product.getName() + "\t\t|\tprice: " + product.getPrice() + "\t\t|\tquantity: " + product.getRemained());
                 }
                 System.out.println("Write the Name of the product you want to buy ");

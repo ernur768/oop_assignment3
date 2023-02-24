@@ -39,9 +39,12 @@ public class ProductRepository implements IProductRepository {
 //
 //
 //            if((rs.next())){
-//               Product product = new Product()
+//               return new Product(rs.getInt("id"), rs.getInt("sellerId"),
+//                       rs.getString("name"), rs.getInt("price"),
+//                       rs.getString("category"), rs.getInt("remained"));
 //            }
 //
+//            return null;
 //        }catch (SQLException e) {
 //            System.out.println("SQLException");
 //            System.out.println(e.getMessage());
@@ -57,6 +60,8 @@ public class ProductRepository implements IProductRepository {
 //        }
 //        return  null;
 //    }
+
+
     @Override
     public Product findProduct(String productName) {
         Connection connection = null;
