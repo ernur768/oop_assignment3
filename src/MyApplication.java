@@ -78,7 +78,7 @@ public class MyApplication {
                 [5] Top up the balance
                 [6] Exit""");
         System.out.print("Choose option: ");
-        optionInRange(4);
+        optionInRange(6);
         System.out.println();
 
         switch (option) {
@@ -139,110 +139,108 @@ public class MyApplication {
     public void startBuyerInterface (){
         System.out.print("""
                 [1] My account
-                [2] Search product by category
-                [3] Search product by name
-                [4] Get all products
-                [5] View products in the cart
-                [6] Top up the balance
-                [7] Exit
+                [2] Search product
+                [3] Get all product list
+                [4] View products in the cart
+                [5] Top up the balance
+                [6] Exit
                 """);
         System.out.print("Choose option: ");
-        optionInRange(3);
+        optionInRange(6);
         System.out.println();
 
         switch (option){
             case 1 -> System.out.println(user.toString());
-
             case 2 -> {
-                Product product;
-                do{
-                    System.out.println("Enter product category: ");
-                    String category = scanner.next();
-                    product = productCtrl.findProduct(category);
-                }while(product == null);
-                System.out.println(product.toString());
-                System.out.println();
-            }
-            case 3 -> {
-                Product product;
-                do {
-                    System.out.print("Enter product name: ");
-                    String name = scanner.next();
-                    product = productCtrl.findProduct(name);
-                }while (product == null);
-                System.out.println(product.toString());
-                System.out.println("""
-                        [1] Add to cart
-                        [2] Close""");
+                System.out.print("""
+                [1] By name
+                [2] By category
+                """);
                 System.out.print("Choose option: ");
                 optionInRange(2);
-
-                switch (option){
+                System.out.println();
+                switch (option) {
                     case 1 -> {
-                        System.out.print("Enter quantity: ");
-                        int quantity = scanner.nextInt();
-                        if (product.getRemained() < quantity){
-                            System.out.println("Only " + product.getRemained() + " pieces left");
-                            break;
-                        }
-                        product.setQuantityInCart(quantity + product.getQuantityInCart());
+                        Product product;
+                        do {
+                            System.out.print("Enter product name: ");
+                            String name = scanner.next();
+                            product = productCtrl.findProduct(name);
+                        }while (product == null);
+                        System.out.println(product.toString());
+                        System.out.println("""
+                        [1] Add to cart
+                        [2] Close""");
+                        System.out.print("Choose option: ");
+                        optionInRange(2);
 
-                        cart.add(product);
-                        for (int i = 0; i < cart.size(); i++) {
-                            for (int j = i + 1; j < cart.size() ; j++) {
-                                if (cart.get(i).getId() == cart.get(j).getId()) {
-                                    cart.get(i).setQuantityInCart(cart.get(i).getQuantityInCart() + cart.get(j).getQuantityInCart());
-                                    cart.remove(j);
-                                    j--;
+                        switch (option){
+                            case 1 -> {
+                                System.out.print("Enter quantity: ");
+                                int quantity = scanner.nextInt();
+                                if (product.getRemained() < quantity){
+                                    System.out.println("Only " + product.getRemained() + " pieces left");
+                                    break;
+                                }
+                                product.setQuantityInCart(quantity + product.getQuantityInCart());
+
+                                cart.add(product);
+                                for (int i = 0; i < cart.size(); i++) {
+                                    for (int j = i + 1; j < cart.size() ; j++) {
+                                        if (cart.get(i).getId() == cart.get(j).getId()) {
+                                            cart.get(i).setQuantityInCart(cart.get(i).getQuantityInCart() + cart.get(j).getQuantityInCart());
+                                            cart.remove(j);
+                                            j--;
+                                        }
+                                    }
                                 }
                             }
+                            case 2 -> {
+                                break;
+                            }
+
                         }
                     }
                     case 2 -> {
-
+                        List<Product> products;
+                        do {
+                            System.out.print("Enter product category: ");
+                            String category = scanner.next();
+                            products = productCtrl.getProductsByCategory(category);
+                        } while (products == null);
+                        System.out.println();
+                        for (Product p : products) {
+                            System.out.println(("id: " + p.getId() + "\t|\tname: " + p.getName() + "\t|\tprice: " + p.getPrice() + "\t|\tremained: " + p.getRemained() + "\t|\tcategory: " + p.getCategory()));
+                        }
                     }
+                }
+            }
 
+            case 3 -> {
+                System.out.println("All products:");
+                System.out.println("ID: " + " Product name: " + " Price: " + " Remained: ");
+                for (Product p : productCtrl.getAllProducts()){
+                    System.out.println(p.getId() + " \t " + p.getName() + " \t\t\t" + p.getPrice() + " \t" + p.getRemained());
                 }
             }
 
             case 4 -> {
-                List<Product> response = productCtrl.getAllProducts();
-                for(Product product : response){
-                    System.out.println("id: " + product.getId() + "\t|\tname: " + product.getName() + "\t\t|\tprice: " + product.getPrice() + "\t\t|\tquantity: " + product.getRemained());
-                }
-                System.out.println("Write the Name of the product you want to buy ");
-                String name = scanner.next();
-                System.out.println("Are you sure you want to buy this product:" + productCtrl.findProduct(name) + "?");
-               System.out.println("How many pieces would you like to buy?");
-               int quantity = scanner.nextInt();
-                productCtrl.updateInfo(name,quantity);
-                break;
-
-
-
-
-            }
-
-
-            case 5 -> {
                 System.out.println("Cart:");
+
                 for(Product product : cart) {
                     System.out.println("id: " + product.getId() + "\t|\tname: " + product.getName() + "\t\t|\tprice: " + product.getPrice() + "\t\t|\tquantity: " + product.getQuantityInCart());
                 }
 
-
-
-
             }
 
-            case 6 -> {
+            case 5 -> {
                 System.out.print("Enter the balance: ");
                 int getBalance = scanner.nextInt();
 
                 System.out.println(userCtrl.createBalance(user, getBalance));
             }
 
-            case 7 -> {
+            case 6 -> {
                 System.out.println();
                 start();
             }
@@ -251,3 +249,5 @@ public class MyApplication {
         System.out.println();
     }
 }
+
+

@@ -41,9 +41,9 @@
 //        switch (menu){
 //            case 1 -> Buyer.printListOfProducts();
 //                1 buyer
-//                    inser into buyer
+//                    insert into buyer
 //                2 seller
-//                    insert into sellet
+//                    insert into seller
 ////            case 2 -> Buyer.buyProductInMenu();
 //            case 3 -> {
 //                User.setCurrentUser(null);
