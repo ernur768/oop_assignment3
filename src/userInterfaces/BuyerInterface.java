@@ -1,4 +1,4 @@
 package userInterfaces;
 
-public class BuyerInterface {
+public class BuyerInterface     {
 }

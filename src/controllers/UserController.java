@@ -23,8 +23,21 @@ public class UserController {
         return user;
     }
 
+
+    public boolean userExists(String userName){
+        User user = repo.findUser(userName);
+
+        return user != null;
+    }
+
     public String register(User user){
-        boolean created = repo.createUser(user);
+        boolean created = false;
+        try {
+            created = repo.createUser(user);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return (created ? "User created" : "User was not created");
     }
 

@@ -40,6 +40,12 @@ public class Authorization {
     public void register(){
         System.out.print("Enter username: ");
         String username = scanner.next();
+
+        if (userCtrl.userExists(username)){
+            System.out.println("User with this username already exists");
+            register();
+        }
+
         System.out.print("Enter password: ");
         String password1 = scanner.next();
         System.out.print("Confirm password: ");
