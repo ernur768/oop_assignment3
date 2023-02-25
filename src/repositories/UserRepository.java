@@ -50,6 +50,68 @@ public class UserRepository implements IUserRepository {
         return null;
     }
 
+
+    public boolean decreaseBalance(User user, int quantity){
+        Connection connection = null;
+
+        if (user.getBalance() < quantity){
+            return false;
+        }
+
+        try{
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("update users set balance=? where id=?");
+            statement.setInt(1,user.getBalance() - quantity);
+            statement.setInt(2, user.getId());
+            statement.execute();
+
+            user.setBalance(user.getBalance() - quantity);
+
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("SQLException");
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public boolean increaseSellerBalance(int userId, int quantity) {
+        Connection connection = null;
+
+        try{
+            connection = db.getConnection();
+            PreparedStatement statement = connection.prepareStatement("UPDATE users " +
+                    "SET balance = balance + ? WHERE id=?");
+            statement.setInt(1, quantity);
+            statement.setInt(2, userId);
+            statement.execute();
+
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("SQLException");
+                System.out.println(e.getMessage());
+            }
+        }
+
+    }
+
     @Override
     public boolean createUser(User user) {
         Connection connection = null;

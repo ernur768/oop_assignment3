@@ -102,8 +102,7 @@ public class ProductRepository implements IProductRepository {
         return null;
     }
 
-    @Override
-    public boolean buyProduct(Product product, int quantity) {
+    public boolean decreaseQuantity(Product product, int quantity) {
         if (product.getRemained() - quantity < 0){
             return false;
         }

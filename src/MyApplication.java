@@ -1,4 +1,5 @@
 import authorization.Authorization;
+import controllers.CartController;
 import controllers.ProductController;
 import controllers.UserController;
 import entities.*;
@@ -13,12 +14,14 @@ public class MyApplication {
     private final Authorization authorization;
     private User user;
     private List<Product> cart;
+    private final CartController cartCtrl;
     private final Scanner scanner;
     private int option;
 
     public MyApplication(ProductController productCtrl, UserController userCtrl) {
         this.userCtrl = userCtrl;
         this.productCtrl = productCtrl;
+        this.cartCtrl = new CartController(productCtrl, userCtrl);
         this.authorization = new Authorization(userCtrl);
         this.scanner = new Scanner(System.in);
         this.cart = new LinkedList<>();
@@ -216,7 +219,6 @@ public class MyApplication {
                     }
                 }
             }
-
             case 3 -> {
                 System.out.println("All products:");
                 System.out.println("ID: " + " Product name: " + " Price: " + " Remained: ");
@@ -226,12 +228,28 @@ public class MyApplication {
             }
 
             case 4 -> {
+                if (cart.size() == 0){
+                    System.out.println("Cart is empty");
+                    break;
+                }
                 System.out.println("Cart:");
 
                 for(Product product : cart) {
                     System.out.println("id: " + product.getId() + "\t|\tname: " + product.getName() + "\t\t|\tprice: " + product.getPrice() + "\t\t|\tquantity: " + product.getQuantityInCart());
                 }
 
+
+                System.out.println("""
+                        Buy products in the cart ?
+                        [1] Yes
+                        [2] No""");
+                System.out.print("Choose option: ");
+                optionInRange(2);
+
+                if (option == 1){
+                    cartCtrl.buyProducts(user, cart);
+                    cart.clear();
+                }
             }
 
             case 5 -> {

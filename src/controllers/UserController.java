@@ -24,6 +24,18 @@ public class UserController {
     }
 
 
+    public String decreaseBalance(User user, int quantity){
+        boolean toppedUp = repo.decreaseBalance(user, quantity);
+        return (toppedUp ? "Balance decreased" : "Balance didn't decrease");
+    }
+
+    public String increaseSellerBalance(int userId, int quantity){
+        boolean increased = repo.increaseSellerBalance(userId, quantity);
+
+        return (increased ? "Seller balance was topped up." : "Seller balance was not topped up.");
+    }
+
+
     public boolean userExists(String userName){
         User user = repo.findUser(userName);
 

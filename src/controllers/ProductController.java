@@ -25,15 +25,10 @@ public class ProductController {
         return product;
     }
 
-    public boolean buyProduct(Product product, int quantity){
-        if(product.getRemained() < quantity){
-           return false;
-        }
-        else{
-            product.getRemained();
-        }return true;
+    public String buyProduct(Product product){
+        boolean bought = repo.decreaseQuantity(product, product.getQuantityInCart());
 
-//        return (product == null? "Such a product is not available " : product.toString());
+        return (bought ? product.getName() + " was bought." : product.getName() + " was not bought.");
     }
 
 
